@@ -681,5 +681,3 @@ app.get("/check-voucher", (req, res) => {
 app.listen(process.env.PORT || port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
-
-module.exports = app;
