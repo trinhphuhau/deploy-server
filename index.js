@@ -538,17 +538,42 @@ app.post("/recommend", (req, res) => {
 });
 
 app.get("/get-recommend-content-based", (req, res) => {
-  connection.query(
-    "SELECT * FROM books ORDER BY book_id DESC LIMIT 0, 5",
-    (err, result) => {
-      if (err) console.log(err);
-      else {
-        if (result.length > 0) {
-          res.json({ title: "Sách mới", data: result });
+  const PythonShell = require("python-shell").PythonShell;
+  let id = req.query.id;
+  let options = {
+    args: [id],
+  };
+  PythonShell.run("contentbased.py", options, function (err, results) {
+    if (err) throw err;
+    let book_id = results.toString().replace(/[\[\]']+/g, "");
+    if (book_id !== "0") {
+      connection.query(
+        "SELECT * FROM books WHERE book_id IN (" +
+          book_id +
+          ") AND status = 1 AND deleted_date IS NULL",
+        (err, result) => {
+          if (err) console.log(err);
+          else {
+            if (result.length > 0) {
+              res.json({ title: "Có thể bạn cũng thích", data: result });
+            }
+          }
         }
-      }
+      );
+    } else {
+      connection.query(
+        "SELECT * FROM books ORDER BY book_id DESC LIMIT 0, 5",
+        (err, result) => {
+          if (err) console.log(err);
+          else {
+            if (result.length > 0) {
+              res.json({ title: "Sách mới", data: result });
+            }
+          }
+        }
+      );
     }
-  );
+  });
 });
 
 //Order History
