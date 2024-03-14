@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@tensorflow/tfjs-node": "^3.9.0",
+    // "@tensorflow/tfjs-node": "^3.9.0",
     "async": "^3.2.1",
     "bcrypt": "^5.0.1",
     "cloudinary": "^1.27.1",
