@@ -157,7 +157,8 @@ app.get("/recent-order", (req, res) => {
     "SELECT *, SUM(quantity) AS total_quantity FROM orders, ordertime, orderdetail "+
       "WHERE orders.order_id = ordertime.order_id AND ordertime.status_id = 'cxn' "+
       "AND orders.order_id = orderdetail.order_id " +
-      "GROUP BY ordertime.order_id ORDER BY order_time DESC LIMIT ?",
+      "ORDER BY order_time DESC LIMIT ?",
+      // "GROUP BY ordertime.order_id ORDER BY order_time DESC LIMIT ?",
     Number(limit),
     function (err, result) {
       if (err) {
