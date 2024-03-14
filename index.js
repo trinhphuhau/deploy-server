@@ -32,6 +32,8 @@ function authenticateToken(req, res, next) {
   });
 }
 
+app.get("/", (req, res) => res.send("Express on Vercel"));
+
 app.get("/new-book", (req, res) => {
   connection.query(
     "SELECT * FROM books WHERE status = 1 AND deleted_date IS NULL ORDER BY book_id DESC LIMIT 0, 10",
