@@ -2,7 +2,7 @@ require("dotenv").config({ path: "./.env" });
 
 const express = require("express");
 const app = express();
-const port = 3001;
+const port = 3000;
 const cors = require("cors");
 
 const async = require("async");
@@ -678,53 +678,8 @@ app.get("/check-voucher", (req, res) => {
   );
 });
 
-// Trang admin
-const dashboardRouter = require("./routers/admin/dashboard");
-const productRouter = require("./routers/admin/product");
-const inventoryRouter = require("./routers/admin/inventory");
-const orderRouter = require("./routers/admin/order");
-const reviewRouter = require("./routers/admin/review");
-const customerRouter = require("./routers/admin/customer");
-const staffRouter = require("./routers/admin/staff");
-const promotionRouter = require("./routers/admin/promotion");
-const messageRouter = require("./routers/admin/message");
-
-app.use("/admin/dashboard", dashboardRouter);
-app.use("/admin/product", productRouter);
-app.use("/admin/inventory", inventoryRouter);
-app.use("/admin/order", orderRouter);
-app.use("/admin/review", reviewRouter);
-app.use("/admin/customer", customerRouter);
-app.use("/admin/staff", staffRouter);
-app.use("/admin/promotion", promotionRouter);
-app.use("/admin/message", messageRouter);
-
-app.post("/admin/login", (req, res) => {
-  const { username, password } = req.body;
-  connection.query(
-    "SELECT * FROM `staffs` WHERE username = ?",
-    username,
-    (err, result) => {
-      if (err) console.log(err);
-      if (result.length > 0) {
-        bcrypt.compare(password, result[0].password, (err, response) => {
-          if (response) {
-            const id = result[0].user_id;
-            const accessToken = jwt.sign({ id }, process.env.ACCESS_TOKEN, {
-              expiresIn: "1d",
-            });
-            res.send({ accessToken: accessToken, result: result, message: "" });
-          } else {
-            res.send({ message: "Tài khoản hoặc mật khẩu không hợp lệ" });
-          }
-        });
-      } else {
-        res.send({ message: "Tài khoản không tồn tại" });
-      }
-    }
-  );
-});
-
 app.listen(process.env.PORT || port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
+
+module.exports = app;
