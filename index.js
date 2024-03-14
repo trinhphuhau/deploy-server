@@ -5,7 +5,6 @@ const app = express();
 const port = 3001;
 const cors = require("cors");
 
-const model = require("./model");
 const async = require("async");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -535,22 +534,6 @@ app.post("/recommend", (req, res) => {
         }
       }
     );
-  } else {
-    model.recommend(userId).then((response) => {
-      connection.query(
-        "SELECT * FROM books WHERE book_id IN (" +
-          connection.escape(response) +
-          ") AND status = 1 AND deleted_date IS NULL",
-        (err, result) => {
-          if (err) console.log(err);
-          else {
-            if (result.length > 0) {
-              res.json(result);
-            }
-          }
-        }
-      );
-    });
   }
 });
 
