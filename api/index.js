@@ -31,6 +31,10 @@ function authenticateToken(req, res, next) {
   });
 }
 
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
 app.get("/new-book", (req, res) => {
   connection.query(
     "SELECT * FROM books WHERE status = 1 AND deleted_date IS NULL ORDER BY book_id DESC LIMIT 0, 10",
@@ -38,7 +42,6 @@ app.get("/new-book", (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        console.log(result);
         res.send(result);
       }
     }
